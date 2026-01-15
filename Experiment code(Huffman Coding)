@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+unordered_map<char,int> freq;
+unordered_map<char,string> huffman_code;
+struct Node
+{
+    char ch;
+    int freq;
+    Node *left, *right;
+    Node(char ch, int fr)
+    {
+        this->ch = ch;
+        freq = fr;
+        left = right = NULL; 
+    }
+};
+struct Compare{
+    bool operator() (Node *a, Node *b){
+        return a->freq > b->freq;
+    }
+};
+void print(Node *root,string st){
+    if(!root) return;
+    if(!root->left && !root->right)
+    {
+        cout << root->ch << ":" << st << endl;
+        huffman_code[root->ch] = st;
+    }
+    print(root->left, st + "0");
+    print(root->right, st + "1");
+}
+int main()
+{
+    string text = "aabbcd";
+    for(char c : text)
+        freq[c]++;
+    priority_queue<Node*, vector<Node*>, Compare> minheap;
+    for(auto p : freq)
+    {
+        minheap.push(new Node(p.first, p.second));
+    }
+    while(minheap.size() > 1)
+    {
+        Node *left = minheap.top(); minheap.pop();
+        Node *right = minheap.top(); minheap.pop();
+        Node *merge = new Node('#', left->freq + right->freq);
+        merge->left = left;
+        merge->right = right;
+        minheap.push(merge);
+    }
+    cout << minheap.top()->freq << endl;
+    print(minheap.top(), "");
+    cout << "\nEncoded string: ";
+    for(char c : text)
+        cout << huffman_code[c];
+    return 0;
+}
