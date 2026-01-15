@@ -51,4 +51,4 @@ int main()
 //Reverse:- O(n)
 //2. Asymptotic complexity: T(n)=aT(n/b)+f(n)
 //where a=3,b=2
-//T(n)= theta(n^1.585)
+//T(n)= theta(n^1.585) [Case 1: f(n)<n^k]
