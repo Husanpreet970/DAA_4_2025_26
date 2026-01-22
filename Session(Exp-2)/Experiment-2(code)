@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+unordered_map<char, int> freq;
+unordered_map<char, string> huffman_code;
+struct Node {
+    char ch;
+    int freq;
+    Node *left, *right;
+    Node(char c, int f) {
+        ch = c;
+        freq = f;
+        left = right = nullptr;
+    }
+};
+struct Compare {
+    bool operator()(Node* a, Node* b) {
+        return a->freq > b->freq;
+    }
+};
+void generateCodes(Node* root, string code) {
+    if (!root) return;
+    if (!root->left && !root->right) {
+        huffman_code[root->ch] = code;
+        cout << root->ch << "  |  "
+             << root->freq << "  |  "
+             << code << endl;
+    }
+    generateCodes(root->left, code + "0");
+    generateCodes(root->right, code + "1");
+}
+string decode(Node* root, const string& encoded) {
+    string decoded = "";
+    Node* curr = root;
+    for (char bit : encoded) {
+        if (bit == '0')
+            curr = curr->left;
+        else
+            curr = curr->right;
+        if (!curr->left && !curr->right) {
+            decoded += curr->ch;
+            curr = root;
+        }
+    }
+    return decoded;
+}
+int main() {
+    string text = "abbcd";
+    for (char c : text)
+        freq[c]++;
+    priority_queue<Node*, vector<Node*>, Compare> minheap;
+    for (auto p : freq)
+        minheap.push(new Node(p.first, p.second));
+    while (minheap.size() > 1) {
+        Node* left = minheap.top(); minheap.pop();
+        Node* right = minheap.top(); minheap.pop();
+        Node* merge = new Node('#', left->freq + right->freq);
+        merge->left = left;
+        merge->right = right;
+        minheap.push(merge);
+    }
+    Node* root = minheap.top();
+    cout << "Char | Freq | Huffman Code\n";
+    cout << "--------------------------\n";
+    generateCodes(root, "");
+    string encoded = "";
+    for (char c : text)
+        encoded += huffman_code[c];
+    cout << "\nEncoded string: " << encoded << endl;
+    string decoded = decode(root, encoded);
+    cout << "Decoded string: " << decoded << endl;
+    return 0;
+}
