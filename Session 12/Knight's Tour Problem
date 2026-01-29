@@ -1,1 +1,41 @@
+class Solution {
+  public:
+    vector<vector<int>> board;
+    vector<vector<int>> result;
+    vector<int> dx = {2, 2, -1, -2, -2, -1, 1, 1};
+    vector<int> dy = {1, -1, 2, 1, -1, -2, -2, 2};
+    int size;
+    bool isSafe(int x, int y) {
+        return (x >= 0 && y >= 0 &&
+                x < size && y < size &&
+                board[x][y] == -1);
+    }
+    bool solve(int r, int c, int move) {
+        if (move == size * size) {
+            result = board;
+            return true;
+        }
+        for (int i = 0; i < 8; i++) {
+            int nx = r + dx[i];
+            int ny = c + dy[i];
+            if (isSafe(nx, ny)) {
+                board[nx][ny] = move;
+                if (solve(nx, ny, move + 1))
+                    return true;
+                board[nx][ny] = -1; 
+            }
+        }
+        return false;
+    }
+    vector<vector<int>> knightTour(int n) {
+        board.assign(n, vector<int>(n, -1));
+        board[0][0] = 0;   
+        size=n;
+        if(!solve(0, 0, 1))
+        {
+            return{};
+    }
+    return result;
+    }
+};
 
