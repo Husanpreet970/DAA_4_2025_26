@@ -1,0 +1,56 @@
+# Input not taken from the user
+#include <iostream>
+#include <vector>
+using namespace std;
+int countSubsets(vector<int>& arr, int S) {
+    int n = arr.size();
+    vector<vector<int>> dp(n + 1, vector<int>(S + 1, 0));
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = 1;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= S; j++) {
+            if (arr[i-1] <= j)
+                dp[i][j] = dp[i-1][j] + dp[i-1][j - arr[i-1]];
+            else
+                dp[i][j] = dp[i-1][j];
+        }
+    }
+    return dp[n][S];
+}
+int main() {
+    vector<int> arr = {1,2,3};
+    int S = 3;
+    cout << countSubsets(arr, S);
+    return 0;
+}
+
+# Input taken from the user
+#include <iostream>
+#include <vector>
+using namespace std;
+int countSubsets(vector<int>& arr, int S) {
+    int n = arr.size();
+    vector<int> dp(S + 1, 0);
+    dp[0] = 1;
+    for (int num : arr) {
+        for (int j = S; j >= num; j--) {
+            dp[j] += dp[j - num];
+        }
+    }
+    return dp[S];
+}
+int main() {
+    int n, S;
+    cout << "Enter number of elements: ";
+    cin >> n;
+    vector<int> arr(n);
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    cout << "Enter target sum: ";
+    cin >> S;
+    int result = countSubsets(arr, S);
+    cout << "Number of subsets with sum " << S << " = " << result << endl;
+    return 0;
+}
