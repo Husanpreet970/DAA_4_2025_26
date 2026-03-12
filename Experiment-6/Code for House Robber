@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n1=0;
+        int n2=0;
+        for(int num:nums)
+        {
+        int house_robbed=max(n1,n2+num);
+        n2=n1;
+        n1=house_robbed;
+    }
+    return n1;
+    }
+};
