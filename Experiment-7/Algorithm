@@ -25,5 +25,10 @@ Steps:-
 4. If dist[dst]==infinity  -->  return -1
     Else --> return dist[dst]
 
-Time Complexity:- O(k*E)
-Space Complexity:- O(n)
+// Time Complexity:- O(k*E)
+-We run the outer loop (k + 1) times
+-Inside each loop, we traverse all flights (edges)
+
+// Space Complexity:- O(n)
+-dist array → size n
+-temp array → size n
