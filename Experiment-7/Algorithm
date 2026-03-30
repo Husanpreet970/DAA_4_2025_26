@@ -1,0 +1,29 @@
+Algorithm: Cheapest Flight Within K Stops
+
+Input values:-
+n:number of cities
+flights:edges(u->v,cost)
+src:starting city
+dst:destination area
+k:maximum stops allowed
+
+Steps:-
+1. Initialize the distances
+-Create array dist[] with size value=n
+-Set all values to infinity
+-Set dist[src]=0
+
+2. Relax edges upto (k+1) times
+
+3. For each iteration:
+-Set temp= dist
+-For every flight(u,v,cost):
+(a) If dist[u]!=infinity:
+        update: temp[v]=min(temp[v],dist[u]+cost)
+(b) Replace dist=temp
+
+4. If dist[dst]==infinity  -->  return -1
+    Else --> return dist[dst]
+
+Time Complexity:- O(k*E)
+Space Complexity:- O(n)
