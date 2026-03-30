@@ -1,0 +1,39 @@
+Example: n=5
+flights=[ [0,1,100],
+  [1,2,100],
+  [0,2,500],
+  [2,3,100],
+  [1,3,600],
+  [3,4,100] ]
+src = 0, dst = 4, k = 2
+
+Goal: Find cheapest price from 0 → 4 with at most 2 stops
+Max edges allowed = k + 1 = 3 edges
+
+Initialization: dist = [0, ∞, ∞, ∞, ∞]
+
+1. Iteration 0( 0 edges used-> direct neighbours)
+Make copy: temp = [0, ∞, ∞, ∞, ∞]
+Relax all flights:
+0 → 1 (100) → temp[1] = 100
+0 → 2 (500) → temp[2] = 500
+Output: dist = [0, 100, 500, ∞, ∞]
+
+2. Iteration 1(1 stop → 2 edges)
+Update: temp = [0, 100, 500, ∞, ∞]
+Relax:
+1 → 2 → 100 + 100 = 200 → better than 500(selected)
+1 → 3 → 100 + 600 = 700
+2 → 3 → 500 + 100 = 600 → better than 700(selected)
+Output: dist = [0, 100, 200, 600, ∞]
+
+3. Iteration 2 (2 stops → 3 edges allowed)
+Update: temp = [0, 100, 200, 600, ∞]
+Relax:
+2 → 3 → 200 + 100 = 300 → better than 600(selected)
+3 → 4 → 600 + 100 = 700
+Output: dist = [0, 100, 200, 300, 700]
+
+Now, (k+1)=3 iterations done...stop
+
+Therefore, dist[4]=700
