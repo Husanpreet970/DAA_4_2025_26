@@ -1,0 +1,331 @@
+# Algorithm Analysis and Performance Evaluation
+
+---
+
+## Objective
+
+The objective of this experiment is to implement and analyze the performance of three fundamental algorithms:
+
+* Binary Search (Efficient searching algorithm)
+* Subset Sum Problem (NP problem)
+* Traveling Salesman Problem – TSP (NP-hard problem)
+---
+
+# A. Experimental Procedure
+
+---
+
+## 🔹 1. Binary Search
+
+### Description
+
+Binary Search is a **divide-and-conquer algorithm** used to find an element in a **sorted array** by repeatedly dividing the search space in half.
+
+---
+
+### Algorithm (C++-Style Pseudocode)
+
+```cpp
+BinarySearch(arr, n, target):
+    left ← 0
+    right ← n - 1
+    while left ≤ right:
+        mid ← (left + right) / 2
+        if arr[mid] == target:
+            return mid
+        else if arr[mid] < target:
+            left ← mid + 1
+        else:
+            right ← mid - 1
+    return -1
+```
+
+---
+
+### Dry Run
+
+**Input:**
+arr = [2, 5, 8, 12, 16, 23, 38]
+target = 16
+
+| Step | left | right | mid | arr[mid] | Decision          |
+| ---- | ---- | ----- | --- | -------- | ----------------- |
+| 1    | 0    | 6     | 3   | 12       | Search right half |
+| 2    | 4    | 6     | 5   | 23       | Search left half  |
+| 3    | 4    | 4     | 4   | 16       | Found             |
+
+**Output:** Index = 4
+
+---
+
+### Edge Cases
+
+* Empty array
+* Target not present
+* Single element
+* Duplicate values
+
+---
+
+### Complexity Analysis
+
+* Best Case: O(1)
+* Average Case: O(log n)
+* Worst Case: O(log n)
+
+---
+
+## 🔹 2. Subset Sum Problem
+
+---
+
+### Description
+
+The Subset Sum Problem determines whether a subset of a given set adds up to a specific target value.
+
+It is a classic **NP-Complete problem**.
+
+---
+
+## (A) Decision Version
+
+### Algorithm
+
+```cpp
+SubsetSum(arr, n, target):
+    if target == 0:
+        return true
+    if n == 0:
+        return false
+    if arr[n-1] > target:
+        return SubsetSum(arr, n-1, target)
+    return SubsetSum(arr, n-1, target) OR
+           SubsetSum(arr, n-1, target - arr[n-1])
+```
+
+---
+
+### Dry Run
+
+**Input:**
+arr = [3, 34, 4, 12, 5, 2]
+target = 9
+Possible valid subset:
+* 3 + 4 + 2 = 9 
+
+---
+
+### (B) Verification Version
+
+### Algorithm
+
+```cpp
+VerifySubset(subset, size, target):
+    sum ← 0
+    for i from 0 to size-1:
+        sum ← sum + subset[i]
+    return (sum == target)
+```
+
+---
+
+### Dry Run
+
+subset = [4, 3, 2]
+sum = 9 → Valid
+
+---
+
+### Edge Cases
+
+* Empty subset
+* Negative numbers
+* Duplicate elements
+* Large input size
+
+---
+
+### Complexity Analysis
+
+* Decision Version: O(2ⁿ)
+* Verification Version: O(n)
+
+---
+
+## 🔹 3. Traveling Salesman Problem (TSP)
+
+---
+
+### Description
+
+The Traveling Salesman Problem aims to find the **minimum cost path** that visits each city exactly once and returns to the starting point.
+This implementation uses **brute force (permutation-based approach)**.
+
+---
+
+### Algorithm
+
+```cpp
+TSP(graph, start):
+    cities ← all cities except start
+    min_cost ← ∞
+    for each permutation of cities:
+        cost ← 0
+        current ← start
+        for each city in permutation:
+            cost ← cost + graph[current][city]
+            current ← city
+        cost ← cost + graph[current][start]
+        min_cost ← min(min_cost, cost)
+    return min_cost
+```
+
+---
+
+### Dry Run
+
+Graph:
+
+```
+    A   B   C
+A [ 0, 10, 15 ]
+B [10,  0, 20 ]
+C [15, 20,  0 ]
+```
+
+Routes:
+
+* A → B → C → A = 45
+* A → C → B → A = 45
+
+**Minimum Cost = 45**
+
+---
+
+### Edge Cases
+
+* Single city
+* Disconnected graph
+* Large number of cities
+
+---
+
+### Complexity Analysis
+
+* Time Complexity: O(n!)
+* Space Complexity: O(n)
+
+---
+
+# B. Performance Measurement
+## 🔹 Metrics Recorded
+---
+
+### Number of Operations
+
+Estimated using theoretical complexity:
+
+| Algorithm     | Operations |
+| ------------- | ---------- |
+| Binary Search | log₂(n)    |
+| Subset Sum    | 2ⁿ         |
+| TSP           | n!         |
+
+---
+
+### Feasibility Status
+
+* Completed → Finished execution
+* Timeout → Too slow to execute
+
+---
+
+## Performance Log
+
+| Algorithm     | Input Size | Time      | Operations | Status    |
+| ------------- | ---------- | --------- | ---------- | --------- |
+| Binary Search | 10         | 0.001 ms  | ~4         | Completed |
+| Binary Search | 1,000,000  | 0.01 ms   | ~20        | Completed |
+| Subset Sum    | 10         | 2 ms      | ~1,024     | Completed |
+| Subset Sum    | 25         | 2 sec     | ~33M       | Completed |
+| Subset Sum    | 40         | Very High | ~1T        | Timeout   |
+| TSP           | 5          | 1 ms      | 120        | Completed |
+| TSP           | 10         | 2 sec     | ~3.6M      | Completed |
+| TSP           | 12         | Very High | ~479M      | Timeout   |
+
+---
+
+# C. Analysis
+
+---
+
+## 🔹 Q1: Efficiency of Binary Search
+
+Binary Search reduces the problem size exponentially:
+
+* Each step halves the dataset
+* Leads to O(log n) complexity
+
+Thus, it performs efficiently even for large inputs.
+
+---
+
+## 🔹 Q2: Subset Sum Complexity
+
+* Solving requires exploring all subsets → O(2ⁿ)
+* Verification only needs summation → O(n)
+
+Hence:
+
+* Hard to solve
+* Easy to verify
+
+---
+
+## 🔹 Q3: TSP Feasibility Limit
+
+| Cities | Routes |
+| ------ | ------ |
+| 10     | 3.6M   |
+| 12     | 479M   |
+| 15     | 1.3T   |
+
+Becomes infeasible at **10–12 cities** due to factorial growth.
+
+---
+
+## 🔹 Q4: Solving vs Verifying
+
+| Aspect     | Solving     | Verifying  |
+| ---------- | ----------- | ---------- |
+| Time       | Exponential | Polynomial |
+| Difficulty | Hard        | Easy       |
+
+---
+
+## 🔹 Q5: NP-Complete Problems
+
+### Key Properties:
+
+* Solutions can be verified quickly
+* No known efficient solution exists
+
+### Importance:
+
+If one NP-complete problem is solved in polynomial time:
+➡ All NP problems become solvable efficiently
+
+---
+
+# Conclusion
+
+* Binary Search → Highly efficient (O(log n))
+* Subset Sum → Exponential complexity (NP-Complete)
+* TSP → Factorial complexity (NP-Hard).
+
+This experiment highlights the difference between:
+
+* Efficient algorithms
+* Intractable computational problems
+
+---
