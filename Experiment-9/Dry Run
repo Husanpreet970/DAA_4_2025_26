@@ -1,0 +1,22 @@
+//Input:
+n = 4
+arr = [1, 6, 11, 5]
+
+//Step 1:
+Total sum = 23
+Target = 23 / 2 = 11
+
+//Step 2: DP Formation
+Possible subset sums up to 11:
+Element-------Possible Sums
+1-------------0,1
+6-------------0,1,6,7
+11------------0,1,6,7,11
+5-------------0,1,5,6,7,11
+
+//Step 3:
+Closest sum to 11 = 11
+
+//Step 4:
+Minimum Difference = 23 - 2 × 11
+                   = 1
