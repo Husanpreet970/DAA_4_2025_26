@@ -1,0 +1,9 @@
+1. Time Complexity:
+      O(n × S)
+Where:
+n = number of elements
+S = total sum / 2
+
+2. Space Complexity:
+      O(S)
+(Using optimized 1D DP array)
