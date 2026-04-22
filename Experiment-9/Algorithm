@@ -1,0 +1,14 @@
+1. Read input array of size n
+2. Compute total sum S of all elements
+3. Set target = S / 2
+4. Create a DP array dp[target + 1]
+       dp[i] = true if subset sum i is possible
+5. Initialize:
+       dp[0] = true
+6. For each element in array:
+       Traverse DP from target to num
+   Update:
+       dp[j] = dp[j] OR dp[j - num]
+7. Find the largest s1 ≤ target such that dp[s1] = true
+8. Return result:
+       minimum difference = S - 2 * s1
