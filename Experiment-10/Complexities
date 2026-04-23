@@ -1,0 +1,12 @@
+1. Time Complexity:
+     O(n × m)
+Explanation:
+Outer loop runs for all characters of s → n times
+Inner loop runs for all characters of t → m times
+Total operations = n × m
+
+2. Space Complexity
+     O(m)
+Explanation:
+We use a 1D DP array of size m + 1
+No extra 2D table is used (optimized solution)
