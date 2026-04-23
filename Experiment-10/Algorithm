@@ -1,0 +1,22 @@
+1. Start
+2. Input two strings:
+      s (source string)
+      t (target string)
+3. Compute:
+       n = length of s
+       m = length of t
+4. Create a DP array dp of size m + 1
+       Initialize all values to 0
+5. Base Case:
+       Set dp[0] = 1
+6. Iterate through string s:
+       For i = 1 to n:
+7. Traverse t backwards
+       For j = m down to 1:
+If characters match:
+       if s[i-1] == t[j-1]
+            dp[j] = dp[j] + dp[j-1]
+8. Final Result:
+       The number of distinct subsequences = dp[m]
+9. Return (int)dp[m]
+10. End
