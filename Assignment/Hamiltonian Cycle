@@ -1,0 +1,88 @@
+- Goal:
+Given an undirected graph, determine whether there exists a Hamiltonian Cycle — a cycle that:
+(a) Visits each vertex exactly once
+(b) Returns to the starting vertex
+
+- Input Representation:
+The graph is represented using an adjacency matrix graph[V][V]
+graph[i][j] = 1 → edge exists
+graph[i][j] = 0 → no edge
+
+- Approach (Backtracking)
+We build the cycle incrementally using a path[] array.
+- Steps:
+1. Start from vertex 0
+2. Add vertices one by one
+3. Before adding a vertex, check:
+4. It is adjacent to the previous vertex
+5. It is not already included in the path
+6. If all vertices are included:
+7. Check if last vertex connects back to start
+
+- Code:
+#include <bits/stdc++.h>
+using namespace std;
+class HamiltonianCycle {
+    int V;
+    vector<vector<int>> graph;
+    vector<int> path;
+public:
+    HamiltonianCycle(vector<vector<int>> g) {
+        graph = g;
+        V = g.size();
+        path.resize(V, -1);
+    }
+    bool isSafe(int v, int pos) {
+        if (graph[path[pos - 1]][v] == 0)
+            return false;
+        for (int i = 0; i < pos; i++)
+            if (path[i] == v)
+                return false;
+        return true;
+    }
+    bool solve(int pos) {
+        if (pos == V) {
+            return (graph[path[pos - 1]][path[0]] == 1);
+        }
+        for (int v = 1; v < V; v++) {
+            if (isSafe(v, pos)) {
+                path[pos] = v;
+                if (solve(pos + 1))
+                    return true;
+                path[pos] = -1;
+            }
+        }
+        return false;
+    }
+    bool findCycle() {
+        path[0] = 0;
+        if (!solve(1)) {
+            cout << "No Hamiltonian Cycle exists\n";
+            return false;
+        }
+        cout << "Hamiltonian Cycle: ";
+        for (int i = 0; i < V; i++)
+            cout << path[i] << " ";
+        cout << path[0] << endl;
+        return true;
+    }
+};
+int main() {
+    vector<vector<int>> graph = {
+        {0,1,1,0,1},
+        {1,0,1,1,0},
+        {1,1,0,1,0},
+        {0,1,1,0,1},
+        {1,0,0,1,0}
+    };
+    HamiltonianCycle hc(graph);
+    hc.findCycle();
+    return 0;
+}
+
+- Output:
+Hamiltonian Cycle: 0 1 2 3 4 0
+
+- Complexity:
+Time Complexity: O(V!)
+Space Complexity: O(V)
