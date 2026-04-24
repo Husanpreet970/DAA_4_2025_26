@@ -1,0 +1,75 @@
+- Goal:
+Place N queens on an N×N board so that:
+No two queens share the same row, column, or diagonal.
+
+- Key Optimization (Hashing):
+Instead of checking the board repeatedly, use:
+col[] → tracks used columns
+diag1[] → tracks main diagonals (row - col)
+diag2[] → tracks anti-diagonals (row + col)
+This reduces checking from O(N) to O(1).
+
+- Code:
+#include <bits/stdc++.h>
+using namespace std;
+class NQueens {
+public:
+    int totalSolutions = 0;
+    void solve(int row, int n, vector<string>& board,
+               vector<bool>& col,
+               vector<bool>& diag1,
+               vector<bool>& diag2) {
+if (row == n) {
+            totalSolutions++;
+            cout << "Solution " << totalSolutions << ":\n";
+            for (auto& r : board)
+                cout << r << endl;
+            cout << endl;
+            return;
+        }
+        for (int c = 0; c < n; c++) {
+            if (col[c] || diag1[row - c + n - 1] || diag2[row + c])
+                continue;
+            board[row][c] = 'Q';
+            col[c] = diag1[row - c + n - 1] = diag2[row + c] = true;
+            solve(row + 1, n, board, col, diag1, diag2);
+            board[row][c] = '.';
+            col[c] = diag1[row - c + n - 1] = diag2[row + c] = false;
+        }
+    }
+    void solveNQueens(int n) {
+        vector<string> board(n, string(n, '.'));
+        vector<bool> col(n, false);
+        vector<bool> diag1(2 * n - 1, false);
+        vector<bool> diag2(2 * n - 1, false);
+        solve(0, n, board, col, diag1, diag2);
+        cout << "Total number of solutions: " << totalSolutions << endl;
+    }
+};
+int main() {
+    int n;
+    cout << "Enter N: ";
+    cin >> n;
+    NQueens nq;
+    nq.solveNQueens(n);
+    return 0;
+}
+
+- Example (N = 4)
+Solution 1:
+.Q..
+...Q
+Q...
+..Q.
+
+Solution 2:
+..Q.
+Q...
+...Q
+.Q..
+
+Total number of solutions: 2
+
+- Complexity:
+Time: ~O(N!)
+Space: O(N²) (board) + O(N) (hashing)
